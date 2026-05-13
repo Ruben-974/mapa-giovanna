@@ -201,6 +201,8 @@
             min-width: 280px;
             max-width: 360px !important;
             font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
         .leaflet-popup-close-button {
             top: 12px !important;
@@ -265,11 +267,13 @@
             color: #1e5b75;
             text-decoration: none;
             font-weight: 500;
+            word-break: break-all;
         }
         .popup-body .info-line .emoji {
             font-size: 1.1rem;
             width: 22px;
             text-align: center;
+            flex-shrink: 0;
         }
         .leaflet-popup-tip {
             box-shadow: none !important;
@@ -308,6 +312,7 @@
             transition: opacity var(--transition);
         }
 
+        /* ========== RESPONSIVO ========== */
         @media (max-width: 768px) {
             .sidebar {
                 position: fixed;
@@ -337,6 +342,36 @@
             .leaflet-popup-content {
                 min-width: 240px;
                 max-width: 290px !important;
+            }
+        }
+
+        /* Ajuste para celular em modo paisagem (menu mais compacto) */
+        @media (max-width: 900px) and (orientation: landscape) {
+            .sidebar {
+                width: 260px;
+                min-width: 260px;
+            }
+            .sidebar-header h1 {
+                font-size: 1.1rem;
+            }
+            .sidebar-header .subtitle {
+                font-size: 0.7rem;
+            }
+            .point-card {
+                padding: 10px 12px;
+                gap: 8px;
+            }
+            .point-card .marker-num {
+                width: 28px;
+                height: 28px;
+                min-width: 28px;
+                font-size: 0.75rem;
+            }
+            .point-card .info .title {
+                font-size: 0.8rem;
+            }
+            .point-card .info .address {
+                font-size: 0.65rem;
             }
         }
 
@@ -389,8 +424,7 @@
                 icon: "🎓",
                 type: "Serviço-Escola",
                 description: "Atendimento psicológico à comunidade realizado por estudantes supervisionados. Oferece avaliação psicológica e psicoterapia breve com valor social.",
-                /* ⚠️ COLOQUE AQUI O ENDEREÇO DA IMAGEM QUE VOCÊ QUER USAR COMO ÍCONE NO MAPA */
-                iconUrl: "imgs/estacio.png"  // Exemplo: "https://exemplo.com/icone-estacio.png"
+                iconUrl: "imgs/estacio.png"
             }, {
                 lat: -22.4362,
                 lng: -42.9818,
@@ -405,8 +439,8 @@
                 description: "Atendimento especializado para crianças e adolescentes com transtornos mentais graves. Equipe multiprofissional com psiquiatria, psicologia, terapia ocupacional e assistência social.",
                 iconUrl: "imgs/CAPSI.png"
             }, {
-                lat: -22.4452,
-                lng: -42.9750,
+                lat: -22.3936,
+                lng: -42.9596,
                 title: "Serviço de Psicologia Aplicada do Unifeso - SPA-Unifeso",
                 address: "Estr. Venceslau José de Medeiros, 1045 - Prata, Teresópolis - RJ, 25976-345",
                 phone: "(21) 2743-5309",
@@ -433,7 +467,7 @@
             }];
 
             // =============================================
-            // CONFIGURAÇÃO DO MAPA
+            // CONFIGURAÇÃO DO MAPA (com zoom limitado)
             // =============================================
             const map = L.map('map', {
                 center: [-22.412, -42.965],
@@ -442,6 +476,8 @@
                 scrollWheelZoom: true,
                 doubleClickZoom: true,
                 dragging: true,
+                minZoom: 12,   // impede zoom muito afastado
+                maxZoom: 17    // impede zoom muito próximo (ajuste conforme necessário)
             });
 
             // Tile com estilo suave (CartoDB Voyager)
@@ -458,7 +494,7 @@
             const marcadores = [];
             const sidebarList = document.getElementById('sidebarList');
 
-            // Ícone numerado (fallback)
+            // Ícone numerado (fallback) - sem alterações
             function criarIconeNumerado(cor, numero, isActive = false) {
                 const size = isActive ? 38 : 34;
                 const borderWidth = isActive ? 4 : 3;
@@ -490,7 +526,6 @@
             // Função que escolhe o ícone correto (imagem personalizada ou numerado)
             function criarIcone(ponto, index, isActive = false) {
                 if (ponto.iconUrl) {
-                    // Usa a imagem fornecida como ícone
                     const size = isActive ? 104 : 100;
                     return L.icon({
                         iconUrl: ponto.iconUrl,
@@ -500,15 +535,15 @@
                         className: 'custom-image-icon'
                     });
                 } else {
-                    // Fallback: marcador numerado colorido
                     const cor = ponto.color || '#2c7da0';
                     return criarIconeNumerado(cor, index + 1, isActive);
                 }
             }
 
             function montarPopup(ponto) {
+                // Monta o link do WhatsApp sem o emoji de mensagem
                 const whatsappLink = ponto.whatsapp ?
-                    `<a href="https://wa.me/55${ponto.phone.replace(/\D/g,'')}" target="_blank" style="color:#25D366;font-weight:600;">${ponto.phone}  <span style="font-size:1rem;">💬</span></a>` :
+                    `<a href="https://wa.me/55${ponto.phone.replace(/\D/g,'')}" target="_blank" style="color:#25D366;font-weight:600;">${ponto.phone}</a>` :
                     `<span>${ponto.phone}</span>`;
 
                 let emailLine = '';
@@ -669,12 +704,12 @@
                 if (e.key === 'Escape' && sidebar.classList.contains('open')) fecharSidebar();
             });
 
-            // Ajustar mapa aos pontos
+            // Ajustar mapa aos pontos (com zoom limitado)
             if (pontosDeInteresse.length > 0) {
                 const bounds = pontosDeInteresse.map(p => [p.lat, p.lng]);
                 map.fitBounds(bounds, {
                     padding: [50, 50],
-                    maxZoom: 15,
+                    maxZoom: 15,   // evita zoom excessivo no fitBounds
                     animate: true,
                 });
             }
@@ -682,7 +717,7 @@
             setTimeout(() => map.invalidateSize(), 300);
 
             console.log('✅ Mapa da rede de saúde mental carregado.');
-            console.log('💡 Para usar ícones personalizados, defina a propriedade "iconUrl" com o link da imagem.');
+            console.log('💡 minZoom/maxZoom configurados para evitar sobreposição.');
         })();
     </script>
 </body>
