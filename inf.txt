@@ -1,0 +1,25 @@
+1 - Tire todos os enderecos atuais, popup, descricao, botao no menu, tudo relacionado aos modelos que vc criou, agora vamos colocar os locais certos
+
+2 - para isso use os seguintes dados
+
+a - Nome do estabelecimento: Serviço Escola de Psicologia da Universidade Estácio de Sá
+b - Endereco: SEP Estácio de Sá R. Nilza Chiapeta Fadigas, 488 - Várzea, Teresópolis - RJ, 25963-150
+c - telefone: (21) 97300-2020 [WhatsApp -> icone]
+
+
+a - Nome do estabelecimento: Centro de Atenção Psicossocial InfantoJuvenil - CAPSI
+b - Endereco: R. Tietê, 845 - Araras, Teresópolis - RJ, 25961-110
+c - telefone: (21) 2742-3890
+
+
+a - Nome do estabelecimento: Serviço de Psicologia Aplicada do Unifeso SPA-Unifeso
+b - Endereco:  Estr. Venceslau José de Medeiros, 1045 - Prata, Teresópolis - RJ, 25976-345
+c - telefone: (21) 2743-5309 [WhatsApp -> icone] 
+d - email: servicodepsicologiaaplicada@unifeso.edu.br
+
+
+a - Nome do estabelecimento: Centro de Atenção Psicossocial - CAPS
+b - Endereco: R. Roberto Rosa, 659 - Tijuca, Teresópolis - RJ
+c - telefone: (21) 96659-3312
+
+3 - crie uma breve descricao esses locais, no colalizador do mapa irei colocar uma imagem posteriormente, deixo isso preparado tambem 
