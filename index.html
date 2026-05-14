@@ -8,8 +8,7 @@
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
-    </script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <style>
         :root {
@@ -252,9 +251,6 @@
             font-size: 0.88rem;
             line-height: 1.6;
         }
-        .popup-body p {
-            margin: 0 0 10px 0;
-        }
         .popup-body .info-line {
             display: flex;
             align-items: center;
@@ -423,7 +419,6 @@
                 color: "#2c7da0",
                 icon: "🎓",
                 type: "Serviço-Escola",
-                description: "Atendimento psicológico à comunidade realizado por estudantes supervisionados. Oferece avaliação psicológica e psicoterapia breve com valor social.",
                 iconUrl: "imgs/estacio.png"
             }, {
                 lat: -22.4362,
@@ -436,7 +431,6 @@
                 color: "#5f9ea0",
                 icon: "🧒",
                 type: "CAPS Infantojuvenil",
-                description: "Atendimento especializado para crianças e adolescentes com transtornos mentais graves. Equipe multiprofissional com psiquiatria, psicologia, terapia ocupacional e assistência social.",
                 iconUrl: "imgs/CAPSI.png"
             }, {
                 lat: -22.3936,
@@ -449,7 +443,6 @@
                 color: "#6c5b7b",
                 icon: "🏥",
                 type: "Clínica-Escola",
-                description: "Serviço-escola do Unifeso que integra ensino, pesquisa e extensão. Oferece psicoterapia individual, grupal e plantão psicológico para a população.",
                 iconUrl: "imgs/unifeso.png"
             }, {
                 lat: -22.4184,
@@ -462,7 +455,6 @@
                 color: "#b56576",
                 icon: "🏠",
                 type: "CAPS Adulto",
-                description: "Serviço de saúde mental para adultos com transtornos severos e persistentes. Desenvolve projetos terapêuticos individuais visando reabilitação psicossocial e autonomia.",
                 iconUrl: "imgs/CAPS.png"
             }];
 
@@ -476,8 +468,8 @@
                 scrollWheelZoom: true,
                 doubleClickZoom: true,
                 dragging: true,
-                minZoom: 12,   // impede zoom muito afastado
-                maxZoom: 17    // impede zoom muito próximo (ajuste conforme necessário)
+                minZoom: 12,
+                maxZoom: 17
             });
 
             // Tile com estilo suave (CartoDB Voyager)
@@ -494,7 +486,7 @@
             const marcadores = [];
             const sidebarList = document.getElementById('sidebarList');
 
-            // Ícone numerado (fallback) - sem alterações
+            // Ícone numerado (fallback)
             function criarIconeNumerado(cor, numero, isActive = false) {
                 const size = isActive ? 38 : 34;
                 const borderWidth = isActive ? 4 : 3;
@@ -523,7 +515,6 @@
                 });
             }
 
-            // Função que escolhe o ícone correto (imagem personalizada ou numerado)
             function criarIcone(ponto, index, isActive = false) {
                 if (ponto.iconUrl) {
                     const size = isActive ? 104 : 100;
@@ -541,7 +532,6 @@
             }
 
             function montarPopup(ponto) {
-                // Monta o link do WhatsApp sem o emoji de mensagem
                 const whatsappLink = ponto.whatsapp ?
                     `<a href="https://wa.me/55${ponto.phone.replace(/\D/g,'')}" target="_blank" style="color:#25D366;font-weight:600;">${ponto.phone}</a>` :
                     `<span>${ponto.phone}</span>`;
@@ -557,7 +547,6 @@
                     <div class="popup-type">${ponto.type}</div>
                   </div>
                   <div class="popup-body">
-                    <p>${ponto.description}</p>
                     <div class="info-line"><span class="emoji">📍</span> ${ponto.address}</div>
                     <div class="info-line"><span class="emoji">📞</span> ${whatsappLink}</div>
                     ${emailLine}
@@ -704,12 +693,12 @@
                 if (e.key === 'Escape' && sidebar.classList.contains('open')) fecharSidebar();
             });
 
-            // Ajustar mapa aos pontos (com zoom limitado)
+            // Ajustar mapa aos pontos
             if (pontosDeInteresse.length > 0) {
                 const bounds = pontosDeInteresse.map(p => [p.lat, p.lng]);
                 map.fitBounds(bounds, {
                     padding: [50, 50],
-                    maxZoom: 15,   // evita zoom excessivo no fitBounds
+                    maxZoom: 15,
                     animate: true,
                 });
             }
@@ -717,7 +706,6 @@
             setTimeout(() => map.invalidateSize(), 300);
 
             console.log('✅ Mapa da rede de saúde mental carregado.');
-            console.log('💡 minZoom/maxZoom configurados para evitar sobreposição.');
         })();
     </script>
 </body>
